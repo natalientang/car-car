@@ -55,13 +55,17 @@ class ServiceForm extends React.Component {
     }
 
     async componentDidMount() {
-        const url = "http://localhost:8100/api/automobiles/"
+        const automobilesurl = "http://localhost:8100/api/automobiles/"
+        const techniciansurl = "http://localhost:8080/api/technicians/"
 
-        const response = await fetch(url);
-        if(response.ok) {
-            const data = await response.json();
-            console.log(data);
-            this.setState({ autos: data.autos });
+        const automobilesresponse = await fetch(automobilesurl);
+        const technicianresponse = await fetch(techniciansurl)
+        if(automobilesresponse.ok && technicianresponse.ok) {
+            const automobilesdata = await automobilesresponse.json();
+            const techniciansdata = await technicianresponse.json();
+            console.log(automobilesdata);
+            console.log(techniciansdata);
+            this.setState({ autos: automobilesdata.autos, technicians: techniciansdata.technicians });
         }
 
     }
@@ -91,8 +95,6 @@ class ServiceForm extends React.Component {
         this.setState({ auto: value });
     }
 
-
-
     render() {
         let notSubmittedClass = "not-submitted";
         let successClass = "alert alert-success d-none mb-0";
@@ -108,6 +110,7 @@ class ServiceForm extends React.Component {
           spinnerClasses = "d-flex justify-content-center mb-3 d-none";
           dropdownClasses = "form-select";
         }
+
     return (
         <div className="container">
         <div className="row">
@@ -128,12 +131,12 @@ class ServiceForm extends React.Component {
                   <label htmlFor="color">Date/Time</label>
                 </div>
                 <div className="mb-3">
-                    <select onChange={this.handleTechnicianChange} name="technician" id="location" className={dropdownClasses} required>
-                      <option value="">Choose a technician</option>
+                    <select onChange={this.handleTechnicianChange} name="technician" id="technician" className={dropdownClasses} required>
+                      <option value="">Choose a Technician</option>
                       {this.state.technicians.map((technician) => {
                         return (
-                          <option key={technician.id} value={technician.href}>
-                            {technician.id}
+                          <option key={technician.employee_number} value={technician.employee_number}>
+                            {technician.name}
                           </option>
                         );
                       })}
