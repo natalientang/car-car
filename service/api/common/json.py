@@ -7,7 +7,7 @@ from datetime import datetime
 class DateEncoder(JSONEncoder):
     def default(self, o):
         if isinstance(o, datetime):
-            return o.isoformat()
+            return o.isoformat("#", "minutes")
         else:
             return super().default(o)
 

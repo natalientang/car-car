@@ -8,3 +8,18 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+async function loadServices() {
+  const response = await fetch('http://localhost:8080/api/services/');
+  if (response.ok) {
+    const data = await response.json();
+    root.render(
+      <React.StrictMode>
+        <App services={data.services} />
+      </React.StrictMode>
+    );
+  } else {
+    console.error(response);
+  }
+}
+loadServices();
