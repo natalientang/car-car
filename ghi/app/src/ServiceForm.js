@@ -10,21 +10,18 @@ class ServiceForm extends React.Component {
             reason: "",
             technician: "",
             technicians: [],
-            autos: [],
         };
         this.handleVinChange = this.handleVinChange.bind(this);
         this.handleCustomerNameChange = this.handleCustomerNameChange.bind(this);
         this.handleDateTimeChange = this.handleDateTimeChange.bind(this);
         this.handleTechnicianChange = this.handleTechnicianChange.bind(this);
         this.handleReasonChange = this.handleReasonChange.bind(this);
-        this.handleAutoChange = this.handleAutoChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     async handleSubmit(event) {
         event.preventDefault();
         const data = {...this.state};
-        delete data.autos;
         delete data.technicians;
         console.log(data);
 
@@ -45,9 +42,8 @@ class ServiceForm extends React.Component {
                 vin: "",
                 customer_name: "",
                 date_time: "",
-                technicians: "",
+                technician: "",
                 reason: "",
-                autos: "",
             };
             this.setState({ success: true });
             this.setState(cleared);
@@ -55,17 +51,13 @@ class ServiceForm extends React.Component {
     }
 
     async componentDidMount() {
-        const automobilesurl = "http://localhost:8100/api/automobiles/"
         const techniciansurl = "http://localhost:8080/api/technicians/"
 
-        const automobilesresponse = await fetch(automobilesurl);
         const technicianresponse = await fetch(techniciansurl)
-        if(automobilesresponse.ok && technicianresponse.ok) {
-            const automobilesdata = await automobilesresponse.json();
+        if(technicianresponse.ok) {
             const techniciansdata = await technicianresponse.json();
-            console.log(automobilesdata);
             console.log(techniciansdata);
-            this.setState({ autos: automobilesdata.autos, technicians: techniciansdata.technicians });
+            this.setState({ technicians: techniciansdata.technicians });
         }
 
     }
@@ -90,10 +82,6 @@ class ServiceForm extends React.Component {
         const value = event.target.value;
         this.setState({ reason: value });
     }
-    handleAutoChange(event) {
-        const value = event.target.value;
-        this.setState({ auto: value });
-    }
 
     render() {
         let notSubmittedClass = "not-submitted";
@@ -106,7 +94,7 @@ class ServiceForm extends React.Component {
 
         let spinnerClasses = "d-flex justify-content-center mb-3";
         let dropdownClasses = "form-select d-none";
-        if (this.state.autos.length > 0) {
+        if (this.state.technicians.length > 0) {
           spinnerClasses = "d-flex justify-content-center mb-3 d-none";
           dropdownClasses = "form-select";
         }

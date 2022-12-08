@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+
 
 
 class AutomobileVO(models.Model):
@@ -15,14 +15,9 @@ class Technician(models.Model):
 class Service(models.Model):
     vin = models.CharField(max_length=100)
     customer_name = models.CharField(max_length=100)
-    date_time = models.DateTimeField(default=timezone.now)
+    date_time = models.DateTimeField()
     reason = models.CharField(max_length=100)
 
-    auto = models.ForeignKey(
-        AutomobileVO,
-        related_name="services",
-        on_delete=models.CASCADE
-    )
     technician = models.ForeignKey(
         Technician,
         related_name="services",

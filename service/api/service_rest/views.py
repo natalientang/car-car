@@ -18,7 +18,7 @@ class TechnicianEncoder(ModelEncoder):
     model = Technician
     properties = [
         "name",
-        "employee_number"
+        "employee_number",
     ]
 
 class ServiceListEncoder(ModelEncoder):
@@ -29,11 +29,9 @@ class ServiceListEncoder(ModelEncoder):
         "date_time",
         "reason",
         "technician",
-        "auto",
         "id"
     ]
     encoders = {
-        "auto": AutomobileVODetailEncoder(),
         "technician": TechnicianEncoder()
     }
 
@@ -44,11 +42,9 @@ class ServiceDetailEncoder(ModelEncoder):
         "customer_name",
         "date_time",
         "reason",
-        "auto",
         "technician",
     ]
     encoders = {
-        "auto": AutomobileVODetailEncoder(),
         "technician": TechnicianEncoder()
     }
 
@@ -62,14 +58,6 @@ def api_list_services(request):
         )
     else:
         content = json.loads(request.body)
-        try:
-            automobile_href = content["auto"]
-            auto = AutomobileVO.objects.get(import_href=automobile_href)
-            content["auto"] = auto
-        except AutomobileVO.DoesNotExist:
-            return JsonResponse(
-                {"message": "Invalid automobile id"},
-            )
         try:
             technician = Technician.objects.get(employee_number=content["technician"])
             content["technician"] = technician
@@ -100,14 +88,6 @@ def api_show_service(request, id):
 
     else:
         content = json.loads(request.body)
-        try:
-            auto = AutomobileVO.objects.get(import_href=content["auto"])
-            content["auto"] = auto
-        except AutomobileVO.DoesNotExist:
-            return JsonResponse(
-                {"message": "Invalid automobile id"},
-                status=400
-            )
 
         Service.objects.filter(id=id).update(**content)
         services = Service.objects.get(id=id)
@@ -116,7 +96,6 @@ def api_show_service(request, id):
             encoder=ServiceDetailEncoder,
             safe=False,
         )
-
 
 @require_http_methods(["GET", "POST"])
 def api_list_technicians(request):
@@ -134,4 +113,13 @@ def api_list_technicians(request):
             technician,
             encoder=TechnicianEncoder,
             safe=False,
+        )
+
+@require_http_methods(["GET"])
+def api_list_automobiles(request):
+    if request.method == "GET":
+        autos = AutomobileVO.objects.all()
+        return JsonResponse(
+            {"autos": autos},
+            encoder=AutomobileVO,
         )
