@@ -108,15 +108,15 @@ class ServiceForm extends React.Component {
               <form onSubmit={this.handleSubmit} id="create-service-form">
                 <div className="form-floating mb-3">
                   <input onChange={this.handleVinChange} value={this.state.vin} placeholder="Vin" required type="text" name="vin" id="vin" className="form-control"/>
-                  <label htmlFor="fabric">Vin</label>
+                  <label htmlFor="vin">Vin</label>
                 </div>
                 <div className="form-floating mb-3">
                   <input onChange={this.handleCustomerNameChange} value={this.state.customer_name} placeholder="Customer Name" required type="text" name="customer_name" id="customer_name" className="form-control"/>
-                  <label htmlFor="style_name">Customer Name</label>
+                  <label htmlFor="customer_name">Customer Name</label>
                 </div>
                 <div className="form-floating mb-3">
                   <input onChange={this.handleDateTimeChange} value={this.state.date_time} placeholder="Date/Time" required type="datetime-local" name="date_time" id="date_time" className="form-control"/>
-                  <label htmlFor="color">Date/Time</label>
+                  <label htmlFor="date_time">Date/Time</label>
                 </div>
                 <div className="mb-3">
                     <select onChange={this.handleTechnicianChange} name="technician" id="technician" className={dropdownClasses} required>
@@ -132,7 +132,7 @@ class ServiceForm extends React.Component {
                   </div>
                 <div className="form-floating mb-3">
                   <input onChange={this.handleReasonChange} value={this.state.reason} placeholder="Reason" required type="text" name="reason" id="reason" className="form-control"/>
-                  <label htmlFor="color">Reason</label>
+                  <label htmlFor="reason">Reason</label>
                 </div>
                 <div>
                 <button className="btn btn-primary mb-3">Create a service</button>
