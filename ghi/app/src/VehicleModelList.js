@@ -1,13 +1,13 @@
 import React from 'react';
 
-class VehicleList extends React.Component {
+class VehicleModelList extends React.Component {
     state = {
         name: "",
         picture_url: "",
         manufacturer_id: "",
     }
 
-    async getVehicleList() {
+    async getVehicleModelList() {
         const response = await fetch("http://localhost:8100/api/models/");
         if(response.ok) {
             const data = await response.json();
@@ -19,13 +19,13 @@ class VehicleList extends React.Component {
     }
 
     async componentDidMount() {
-        this.getVehicleList();
+        this.getVehicleModelList();
     }
 
     async handleDelete(event) {
         const url = `http://localhost:8100/api/models/${event}`
         await fetch(url, {method: "DELETE"})
-        this.getVehicleList()
+        this.getVehicleModelList()
     }
 
     render() {
@@ -55,4 +55,4 @@ class VehicleList extends React.Component {
       }
   }
 
-export default VehicleList;
+export default VehicleModelList;

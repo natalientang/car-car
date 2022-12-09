@@ -1,6 +1,6 @@
 import React from 'react';
 
-class VehicleForm extends React.Component {
+class VehicleModelForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -127,4 +127,4 @@ class VehicleForm extends React.Component {
     }
 }
 
-export default VehicleForm;
+export default VehicleModelForm;

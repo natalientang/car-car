@@ -7,8 +7,8 @@ import TechnicianForm from './TechnicianForm';
 import ServiceHistory from './ServiceHistory';
 import ManufacturerForm from './ManufacturerForm';
 import ManufacturerList from './ManufacturerList';
-import VehicleForm from './VehicleForm';
-import VehicleList from './VehicleList';
+import VehicleModelForm from './VehicleModelForm';
+import VehicleModelList from './VehicleModelList';
 
 
 function App() {
@@ -31,8 +31,8 @@ function App() {
             <Route path="new" element={<ManufacturerForm />} />
           </Route>
           <Route path = "models">
-            <Route path="" element={<VehicleList/>} />
-            <Route path="new" element={<VehicleForm />} />
+            <Route path="" element={<VehicleModelList/>} />
+            <Route path="new" element={<VehicleModelForm />} />
           </Route>
         </Routes>
       </div>
