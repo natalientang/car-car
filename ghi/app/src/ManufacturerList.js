@@ -2,29 +2,30 @@ import React from 'react';
 
 class ManufacturerList extends React.Component {
     state = {
-        name: ""
+        name: "",
+        errorMessage: ""
     }
+
 
     async getManufacturerList() {
         const response = await fetch("http://localhost:8100/api/manufacturers/");
         if(response.ok) {
             const data = await response.json();
             const manufacturers = data.manufacturers;
-
             this.setState({manufacturers: manufacturers});
-            console.log(data)
+        }
+        else {
+          this.setState({
+            errorMessage: "Could not get list of manufacturers"
+          })
         }
     }
 
+
     async componentDidMount() {
-        this.getManufacturerList();
+        await this.getManufacturerList();
     }
 
-    async handleDelete(event) {
-        const url = `http://localhost:8100/api/manufacturers/${event}`
-        await fetch(url, {method: "DELETE"})
-        this.getManufacturerList()
-    }
 
     render() {
         return (

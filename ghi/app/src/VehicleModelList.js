@@ -1,25 +1,30 @@
 import React from 'react';
-
 class VehicleModelList extends React.Component {
     state = {
         name: "",
         picture_url: "",
         manufacturer_id: "",
+        errorMessage: ""
     }
+
 
     async getVehicleModelList() {
         const response = await fetch("http://localhost:8100/api/models/");
         if(response.ok) {
             const data = await response.json();
             const models = data.models;
-
             this.setState({models: models});
-            console.log(data)
+        }
+        else{
+          this.setState({
+            errorMessage: "Could not get list of vehicle models"
+          })
         }
     }
 
+
     async componentDidMount() {
-        this.getVehicleModelList();
+        await this.getVehicleModelList();
     }
 
     async handleDelete(event) {
@@ -27,6 +32,7 @@ class VehicleModelList extends React.Component {
         await fetch(url, {method: "DELETE"})
         this.getVehicleModelList()
     }
+
 
     render() {
           return (

@@ -5,16 +5,18 @@ class ManufacturerForm extends React.Component {
         super(props);
         this.state = {
             name: "",
+            errorMessage: "",
+            success: false
         };
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    async handleSubmit(event) {
+
+    handleSubmit = async (event) => {
         event.preventDefault();
         const data = {...this.state};
         delete data.manufacturers;
-        console.log(data);
+        delete data.errorMessage;
+        delete data.success;
 
         const manufacturersUrl = `http://localhost:8100/api/manufacturers/`;
         const fetchConfig = {
@@ -26,29 +28,33 @@ class ManufacturerForm extends React.Component {
         };
         const response = await fetch(manufacturersUrl, fetchConfig);
         if(response.ok) {
-            const newManufacturer = await response.json();
-            console.log(newManufacturer);
-
             const cleared = {
                 name: "",
             };
             this.setState({ success: true });
             this.setState(cleared);
         }
+        else {
+          this.setState ({
+            errorMessage: "Could not submit form"
+          })
+        }
     }
 
-    handleNameChange(event) {
+
+    handleNameChange = (event) => {
         const value = event.target.value;
         this.setState({ name: value });
     }
 
+
     render() {
-        let notSubmittedClass = "not-submitted";
         let successClass = "alert alert-success d-none mb-0";
         if (this.state.success === true) {
-          notSubmittedClass = "not-submitted d-none";
           successClass = "alert alert-success mb-0";
         }
+
+
 
     return (
         <div className="container">
@@ -58,7 +64,13 @@ class ManufacturerForm extends React.Component {
               <h1>Create a new manufacturer</h1>
               <form onSubmit={this.handleSubmit} id="create-service-form">
                 <div className="form-floating mb-3">
-                  <input onChange={this.handleNameChange} value={this.state.name} placeholder="Name" required type="text" name="name" id="name" className="form-control"/>
+                  <input
+                  onChange={this.handleNameChange}
+                  value={this.state.name}
+                  placeholder="Name"
+                  required type="text"
+                  name="name" id="name"
+                  className="form-control"/>
                   <label htmlFor="name">Name</label>
                 </div>
                 <div>

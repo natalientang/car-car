@@ -1,54 +1,10 @@
-from django.shortcuts import render
-from common.json import ModelEncoder
 from .models import Service, AutomobileVO, Technician
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 import json
+from .encoders import ServiceDetailEncoder, ServiceListEncoder, TechnicianEncoder
+from django.http import JsonResponse
 
-class AutomobileVODetailEncoder(ModelEncoder):
-    model = AutomobileVO
-    properties = [
-        "color",
-        "year",
-        "vin",
-        "import_href"
-    ]
-
-class TechnicianEncoder(ModelEncoder):
-    model = Technician
-    properties = [
-        "name",
-        "employee_number",
-    ]
-
-class ServiceListEncoder(ModelEncoder):
-    model = Service
-    properties = [
-        "vin",
-        "customer_name",
-        "date",
-        "time",
-        "reason",
-        "technician",
-        "id"
-    ]
-    encoders = {
-        "technician": TechnicianEncoder()
-    }
-
-class ServiceDetailEncoder(ModelEncoder):
-    model = Service
-    properties = [
-        "vin",
-        "customer_name",
-        "date",
-        "time",
-        "reason",
-        "technician",
-    ]
-    encoders = {
-        "technician": TechnicianEncoder()
-    }
 
 @require_http_methods(["GET", "POST"])
 def api_list_services(request):
@@ -59,45 +15,66 @@ def api_list_services(request):
             encoder=ServiceListEncoder
         )
     else:
-        content = json.loads(request.body)
         try:
+            content = json.loads(request.body)
             technician = Technician.objects.get(employee_number=content["technician"])
             content["technician"] = technician
-        except Technician.DoesNotExist:
-            return JsonResponse(
-                {"message": "Invalid technician id"},
+        except:
+            response = JsonResponse(
+                {"message": "Could not create technician"},
             )
+            response.status_code = 400
+            return response
+        try:
+            service = Service.objects.create(**content)
+            return JsonResponse(
+                service,
+                encoder=ServiceDetailEncoder,
+                safe=False,
+            )
+        except:
+            response = JsonResponse(
+                {"message": "Could not create service"},
+            )
+            response.status_code = 400
+            return response
 
-        service = Service.objects.create(**content)
-        return JsonResponse(
-            service,
-            encoder=ServiceDetailEncoder,
-            safe=False,
-        )
 
 @require_http_methods(["DELETE", "GET", "PUT"])
 def api_show_service(request, id):
     if request.method == "GET":
-        service = Service.objects.get(id=id)
-        return JsonResponse(
-            service,
-            encoder=ServiceDetailEncoder,
-            safe=False,
-        )
+        try:
+            service = Service.objects.get(id=id)
+            return JsonResponse(
+                service,
+                encoder=ServiceDetailEncoder,
+                safe=False,
+            )
+        except Service.DoesNotExist:
+            response = JsonResponse({"message": "Service does not exist"})
+            response.status_code = 404
+            return response
     elif request.method == "DELETE":
-        count, _ = Service.objects.filter(id=id).delete()
-        return JsonResponse({"deleted": count > 0})
-
+        try:
+            count, _ = Service.objects.filter(id=id).delete()
+            return JsonResponse({"deleted": count > 0})
+        except Service.DoesNotExist:
+            return JsonResponse({"message": "Service does not exist"})
     else:
-        content = json.loads(request.body)
+        try:
+            content = json.loads(request.body)
+            Service.objects.filter(id=id).update(**content)
+            services = Service.objects.get(id=id)
+            return JsonResponse(
+                services,
+                encoder=ServiceDetailEncoder,
+                safe=False,
+            )
+        except Service.DoesNotExist:
+            response = JsonResponse({"message": "Service does not exist"})
+            response.status_code = 404
+            return response
 
-        Service.objects.filter(id=id).update(**content)
-        services = Service.objects.get(id=id)
-        return JsonResponse(
-            services,
-            encoder=ServiceDetailEncoder,
-            safe=False,
-        )
 
 @require_http_methods(["GET", "POST"])
 def api_list_technicians(request):
@@ -108,14 +85,20 @@ def api_list_technicians(request):
             encoder=TechnicianEncoder,
         )
     else:
-        content = json.loads(request.body)
+        try:
+            content = json.loads(request.body)
 
-        technician = Technician.objects.create(**content)
-        return JsonResponse(
-            technician,
-            encoder=TechnicianEncoder,
-            safe=False,
-        )
+            technician = Technician.objects.create(**content)
+            return JsonResponse(
+                technician,
+                encoder=TechnicianEncoder,
+                safe=False,
+            )
+        except:
+            response = JsonResponse({"message": "Could not create a technician"})
+            response.status_code = 400
+            return response
+
 
 @require_http_methods(["GET"])
 def api_list_automobiles(request):
@@ -125,3 +108,7 @@ def api_list_automobiles(request):
             {"autos": autos},
             encoder=AutomobileVO,
         )
+    else:
+         response = JsonResponse({"message": "AutomobileVO does not exist"})
+         response.status_code = 404
+         return response

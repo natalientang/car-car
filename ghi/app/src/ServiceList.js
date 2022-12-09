@@ -4,33 +4,43 @@ class ServiceList extends React.Component {
     state = {
         services: [],
         autos: [],
+        errorMessage: ""
     }
+
 
     async getServiceList() {
         const response = await fetch("http://localhost:8080/api/services");
         if(response.ok) {
             const data = await response.json();
             const services = data.services;
-
             this.setState({services: services});
-            console.log(data)
+        }
+        else {
+          this.setState({
+            errorMessage: "Could not get list of services"
+          })
         }
     }
+
 
     async getAutoList() {
       const response = await fetch("http://localhost:8100/api/automobiles/");
       if(response.ok) {
           const data = await response.json();
           const autos = data.autos;
-
           this.setState({autos: autos});
-          console.log(data)
+      }
+      else {
+        this.setState({
+          errorMessage: "Could not get list of autos"
+        })
       }
   }
 
+
     async componentDidMount() {
-        this.getServiceList();
-        this.getAutoList();
+        await this.getServiceList();
+        await this.getAutoList();
     }
 
     async handleDelete(event) {
@@ -39,8 +49,10 @@ class ServiceList extends React.Component {
         this.getServiceList()
     }
 
+
     render() {
       let vip = "d-none"
+
 
         return (
         <div>
@@ -64,11 +76,11 @@ class ServiceList extends React.Component {
                     {this.state.autos.map(auto => {
                       if (service.vin == auto.vin){
                         return(
-                        <td key={service.id}><img src="https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/1999085/yellow-star-clipart-xl.png" width="35" height="35"/></td>
+                        <td key = {auto.id}><img src="https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/1999085/yellow-star-clipart-xl.png" width="35" height="35"/></td>
                         )
                       }
                       else{
-                        return(<td key={service.id}><img className={vip} src="https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/1999085/yellow-star-clipart-xl.png" width="35" height="35"/></td>
+                        return(<td key={auto.id}><img className={vip}/></td>
                         )
                       }
                     })}

@@ -6,17 +6,18 @@ class TechnicianForm extends React.Component {
         this.state = {
             name: "",
             employee_number: "",
+            errorMessage: "",
+            success: false
         };
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleEmployeeNumberChange = this.handleEmployeeNumberChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    async handleSubmit(event) {
+
+    handleSubmit = async (event) =>{
         event.preventDefault();
         const data = {...this.state};
         delete data.technicians;
-        console.log(data);
+        delete data.errorMessage;
+        delete data.success;
 
         const techniciansUrl = `http://localhost:8080/api/technicians/`;
         const fetchConfig = {
@@ -28,9 +29,6 @@ class TechnicianForm extends React.Component {
         };
         const response = await fetch(techniciansUrl, fetchConfig);
         if(response.ok) {
-            const newTechnician = await response.json();
-            console.log(newTechnician);
-
             const cleared = {
                 name: "",
                 employee_number: "",
@@ -38,24 +36,30 @@ class TechnicianForm extends React.Component {
             this.setState({ success: true });
             this.setState(cleared);
         }
+        else {
+          this.setState ({
+            errorMessage: "Could not submit form"
+          })
+        }
     }
 
-    handleNameChange(event) {
+
+    handleNameChange = (event) => {
         const value = event.target.value;
         this.setState({ name: value });
     }
-    handleEmployeeNumberChange(event) {
+    handleEmployeeNumberChange = (event) => {
         const value = event.target.value;
         this.setState({ employee_number: value });
     }
 
+
     render() {
-        let notSubmittedClass = "not-submitted";
         let successClass = "alert alert-success d-none mb-0";
         if (this.state.success === true) {
-          notSubmittedClass = "not-submitted d-none";
           successClass = "alert alert-success mb-0";
         }
+
 
     return (
         <div className="container">
@@ -65,11 +69,25 @@ class TechnicianForm extends React.Component {
               <h1>Create a new technician</h1>
               <form onSubmit={this.handleSubmit} id="create-technician-form">
                 <div className="form-floating mb-3">
-                  <input onChange={this.handleNameChange} value={this.state.name} placeholder="Name" required type="text" name="name" id="name" className="form-control"/>
+                  <input
+                  onChange={this.handleNameChange}
+                  value={this.state.name}
+                  placeholder="Name"
+                  required type="text"
+                  name="name"
+                  id="name"
+                  className="form-control"/>
                   <label htmlFor="fabric">Name</label>
                 </div>
                 <div className="form-floating mb-3">
-                  <input onChange={this.handleEmployeeNumberChange} value={this.state.employee_number} placeholder="Employee Number" required type="number" name="customer_name" id="customer_name" className="form-control"/>
+                  <input
+                  onChange={this.handleEmployeeNumberChange}
+                  value={this.state.employee_number}
+                  placeholder="Employee Number"
+                  required type="number"
+                  name="customer_name"
+                  id="customer_name"
+                  className="form-control"/>
                   <label htmlFor="style_name">Employee Number</label>
                 </div>
                 <div>

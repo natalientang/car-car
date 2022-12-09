@@ -6,28 +6,29 @@ class AutomobileList extends React.Component {
         year: "",
         vin: "",
         model_id: "",
+        errorMessage: ""
     }
+
 
     async getAutomobileList() {
         const response = await fetch("http://localhost:8100/api/automobiles/");
         if(response.ok) {
             const data = await response.json();
             const autos = data.autos;
-
             this.setState({autos: autos});
-            console.log(data)
+        }
+        else {
+          this.setState({
+            errorMessage: "Could not get list of automobiles"
+          })
         }
     }
 
+
     async componentDidMount() {
-        this.getAutomobileList();
+        await this.getAutomobileList();
     }
 
-    async handleDelete(event) {
-        const url = `http://localhost:8100/api/automobiles/${event}`
-        await fetch(url, {method: "DELETE"})
-        this.getAutomobileList()
-    }
 
     render() {
           return (
