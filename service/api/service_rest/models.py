@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 class AutomobileVO(models.Model):
     color = models.CharField(max_length=20)
@@ -13,7 +14,8 @@ class Technician(models.Model):
 class Service(models.Model):
     vin = models.CharField(max_length=17)
     customer_name = models.CharField(max_length=100)
-    date_time = models.DateTimeField(null=True)
+    date = models.DateField(default=datetime.now, blank=True)
+    time = models.TimeField(default=datetime.now, blank=True)
     reason = models.CharField(max_length=100)
 
     technician = models.ForeignKey(

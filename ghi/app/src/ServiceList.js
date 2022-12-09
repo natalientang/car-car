@@ -1,12 +1,9 @@
 import React from 'react';
-import moment from 'moment';
 
 class ServiceList extends React.Component {
     state = {
         services: [],
         autos: [],
-        service: "",
-        auto: ""
     }
 
     async getServiceList() {
@@ -52,7 +49,8 @@ class ServiceList extends React.Component {
                 <th>VIP Status</th>
                 <th>Vin</th>
                 <th>Customer Name</th>
-                <th>Date/Time</th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Technician</th>
                 <th>Reason</th>
               </tr>
@@ -74,7 +72,8 @@ class ServiceList extends React.Component {
                     })}
                     <td>{ service.vin }</td>
                     <td>{ service.customer_name }</td>
-                    <td>{moment(service.date_time).format("DD-MM-YYYY @ h:mm a")}</td>
+                    <td>{ service.date }</td>
+                    <td>{ service.time }</td>
                     <td>{ service.technician.name }</td>
                     <td>{ service.reason }</td>
                     <td><button className="btn btn-danger" onClick={() => this.handleDelete(service.id)}>Cancel</button></td>

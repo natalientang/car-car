@@ -6,14 +6,15 @@ class ServiceForm extends React.Component {
         this.state = {
             vin: "",
             customer_name: "",
-            date_time: "",
+            date: "",
+            time: "",
             reason: "",
-            technician: "",
             technicians: [],
         };
         this.handleVinChange = this.handleVinChange.bind(this);
         this.handleCustomerNameChange = this.handleCustomerNameChange.bind(this);
-        this.handleDateTimeChange = this.handleDateTimeChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+        this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleTechnicianChange = this.handleTechnicianChange.bind(this);
         this.handleReasonChange = this.handleReasonChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,7 +42,8 @@ class ServiceForm extends React.Component {
             const cleared = {
                 vin: "",
                 customer_name: "",
-                date_time: "",
+                date: "",
+                time: "",
                 technician: "",
                 reason: "",
             };
@@ -70,10 +72,14 @@ class ServiceForm extends React.Component {
         const value = event.target.value;
         this.setState({ customer_name: value });
     }
-    handleDateTimeChange(event) {
+    handleDateChange(event) {
         const value = event.target.value;
-        this.setState({ date_time: value });
+        this.setState({ date: value });
     }
+    handleTimeChange(event) {
+      const value = event.target.value;
+      this.setState({ time: value });
+  }
     handleTechnicianChange(event) {
         const value = event.target.value;
         this.setState({ technician: value });
@@ -104,7 +110,7 @@ class ServiceForm extends React.Component {
         <div className="row">
           <div className="offset-3 col-6">
             <div className="shadow p-4 mt-4">
-              <h1>Create a new service</h1>
+              <h1>Create a new service appointment</h1>
               <form onSubmit={this.handleSubmit} id="create-service-form">
                 <div className="form-floating mb-3">
                   <input onChange={this.handleVinChange} value={this.state.vin} placeholder="Vin" required type="text" name="vin" id="vin" className="form-control"/>
@@ -115,8 +121,12 @@ class ServiceForm extends React.Component {
                   <label htmlFor="customer_name">Customer Name</label>
                 </div>
                 <div className="form-floating mb-3">
-                  <input onChange={this.handleDateTimeChange} value={this.state.date_time} placeholder="Date/Time" required type="datetime-local" name="date_time" id="date_time" className="form-control"/>
-                  <label htmlFor="date_time">Date/Time</label>
+                  <input onChange={this.handleDateChange} value={this.state.date} placeholder="Date" required type="date" name="date" id="date" className="form-control"/>
+                  <label htmlFor="date">Date</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input onChange={this.handleTimeChange} value={this.state.date_time} placeholder="Time" required type="time" name="time" id="time" className="form-control"/>
+                  <label htmlFor="time">Time</label>
                 </div>
                 <div className="mb-3">
                     <select onChange={this.handleTechnicianChange} name="technician" id="technician" className={dropdownClasses} required>
@@ -129,16 +139,16 @@ class ServiceForm extends React.Component {
                         );
                       })}
                     </select>
-                  </div>
+                </div>
                 <div className="form-floating mb-3">
                   <input onChange={this.handleReasonChange} value={this.state.reason} placeholder="Reason" required type="text" name="reason" id="reason" className="form-control"/>
                   <label htmlFor="reason">Reason</label>
                 </div>
                 <div>
-                <button className="btn btn-primary mb-3">Create a service</button>
+                <button className="btn btn-primary mb-3">Create a service appointment</button>
                 </div>
                 <div className={successClass} id="success-message">
-                    You have created a new service!
+                    You have created a new service appointment!
                 </div>
               </form>
             </div>
