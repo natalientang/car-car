@@ -30,9 +30,10 @@ class VehicleModelList extends React.Component {
 
     render() {
           return (
+          <div>
+          <h1 className="mt-3">Vehicle Models</h1>
           <table className="table table-striped">
               <thead>
-              <h1 className="mt-3">Vehicle Models</h1>
                 <tr>
                   <th>Manufacturer</th>
                   <th>Name</th>
@@ -50,7 +51,8 @@ class VehicleModelList extends React.Component {
                   );
                 })}
               </tbody>
-            </table>
+          </table>
+          </div>
           );
       }
   }

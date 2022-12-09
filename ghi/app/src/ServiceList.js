@@ -43,6 +43,8 @@ class ServiceList extends React.Component {
       let vip = "d-none"
 
         return (
+        <div>
+        <h1 className="mt-3">Service Appointments</h1>
         <table className="table table-striped">
             <thead>
               <tr>
@@ -82,7 +84,8 @@ class ServiceList extends React.Component {
                 );
               })}
             </tbody>
-          </table>
+        </table>
+        </div>
         );
     }
 }

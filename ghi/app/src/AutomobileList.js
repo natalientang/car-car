@@ -31,9 +31,10 @@ class AutomobileList extends React.Component {
 
     render() {
           return (
+          <div>
+          <h1 className="mt-3">Automobiles</h1>
           <table className="table table-striped">
               <thead>
-              <h1 className="mt-3">Automobiles</h1>
                 <tr>
                   <th>Color</th>
                   <th>Year</th>
@@ -53,7 +54,8 @@ class AutomobileList extends React.Component {
                   );
                 })}
               </tbody>
-            </table>
+          </table>
+          </div>
           );
       }
   }
