@@ -45,7 +45,6 @@ class ManufacturerForm extends React.Component {
     render() {
         let notSubmittedClass = "not-submitted";
         let successClass = "alert alert-success d-none mb-0";
-
         if (this.state.success === true) {
           notSubmittedClass = "not-submitted d-none";
           successClass = "alert alert-success mb-0";
