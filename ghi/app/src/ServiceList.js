@@ -66,7 +66,7 @@ class ServiceList extends React.Component {
                         )
                       }
                       else{
-                        return(<td key={service.id}><img className={vip}src="https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/1999085/yellow-star-clipart-xl.png" width="35" height="35"/></td>
+                        return(<td key={service.id}><img className={vip} src="https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/1999085/yellow-star-clipart-xl.png" width="35" height="35"/></td>
                         )
                       }
                     })}

@@ -3,7 +3,6 @@ import React from 'react';
 class ServiceHistory extends React.Component {
     state = {
         services: [],
-        service: "",
     }
 
     async getServiceHistory() {
@@ -32,7 +31,7 @@ class ServiceHistory extends React.Component {
         <table className="table table-striped">
             <thead>
               <tr>
-                <th>Vin</th>
+                <th>VIN</th>
                 <th>Customer Name</th>
                 <th>Date</th>
                 <th>Time</th>

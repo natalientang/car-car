@@ -70,7 +70,7 @@ class TechnicianForm extends React.Component {
                   <label htmlFor="fabric">Name</label>
                 </div>
                 <div className="form-floating mb-3">
-                  <input onChange={this.handleEmployeeNumberChange} value={this.state.employee_number} placeholder="Employee Number" required type="text" name="customer_name" id="customer_name" className="form-control"/>
+                  <input onChange={this.handleEmployeeNumberChange} value={this.state.employee_number} placeholder="Employee Number" required type="number" name="customer_name" id="customer_name" className="form-control"/>
                   <label htmlFor="style_name">Employee Number</label>
                 </div>
                 <div>

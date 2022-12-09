@@ -113,8 +113,8 @@ class ServiceForm extends React.Component {
               <h1>Create a new service appointment</h1>
               <form onSubmit={this.handleSubmit} id="create-service-form">
                 <div className="form-floating mb-3">
-                  <input onChange={this.handleVinChange} value={this.state.vin} placeholder="Vin" required type="text" name="vin" id="vin" className="form-control"/>
-                  <label htmlFor="vin">Vin</label>
+                  <input onChange={this.handleVinChange} value={this.state.vin} placeholder="VIN" required type="text" name="vin" id="vin" className="form-control"/>
+                  <label htmlFor="vin">VIN</label>
                 </div>
                 <div className="form-floating mb-3">
                   <input onChange={this.handleCustomerNameChange} value={this.state.customer_name} placeholder="Customer Name" required type="text" name="customer_name" id="customer_name" className="form-control"/>

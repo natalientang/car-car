@@ -6,7 +6,6 @@ class VehicleModelForm extends React.Component {
         this.state = {
             name: "",
             picture_url: "",
-            manufacturer_id: "",
             manufacturer_ids: [],
         };
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -97,7 +96,7 @@ class VehicleModelForm extends React.Component {
                   <label htmlFor="name">Name</label>
                 </div>
                 <div className="form-floating mb-3">
-                  <input onChange={this.handlePictureUrlChange} value={this.state.picture_url} placeholder="Picture URL" required type="text" name="picture_url" id="picture_url" className="form-control"/>
+                  <input onChange={this.handlePictureUrlChange} value={this.state.picture_url} placeholder="Picture URL" required type="url" name="picture_url" id="picture_url" className="form-control"/>
                   <label htmlFor="picture_url">Picture URL</label>
                 </div>
                 <div>
