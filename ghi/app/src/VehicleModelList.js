@@ -8,6 +8,11 @@ class VehicleModelList extends React.Component {
     }
 
 
+    async componentDidMount() {
+        await this.getVehicleModelList();
+    }
+
+
     async getVehicleModelList() {
         const response = await fetch("http://localhost:8100/api/models/");
         if(response.ok) {
@@ -22,10 +27,6 @@ class VehicleModelList extends React.Component {
         }
     }
 
-
-    async componentDidMount() {
-        await this.getVehicleModelList();
-    }
 
     async handleDelete(event) {
         const url = `http://localhost:8100/api/models/${event}`

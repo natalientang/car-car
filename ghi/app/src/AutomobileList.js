@@ -10,6 +10,11 @@ class AutomobileList extends React.Component {
     }
 
 
+    async componentDidMount() {
+        await this.getAutomobileList();
+    }
+
+
     async getAutomobileList() {
         const response = await fetch("http://localhost:8100/api/automobiles/");
         if(response.ok) {
@@ -22,11 +27,6 @@ class AutomobileList extends React.Component {
             errorMessage: "Could not get list of automobiles"
           })
         }
-    }
-
-
-    async componentDidMount() {
-        await this.getAutomobileList();
     }
 
 

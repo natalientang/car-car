@@ -2,11 +2,16 @@ import React from 'react';
 
 class ServiceList extends React.Component {
     state = {
-        services: [],
-        autos: [],
-        errorMessage: ""
-    }
+      services: [],
+      autos: [],
+      errorMessage: ""
+  }
 
+
+    async componentDidMount() {
+        await this.getServiceList();
+        await this.getAutoList();
+    }
 
     async getServiceList() {
         const response = await fetch("http://localhost:8080/api/services");
@@ -38,13 +43,8 @@ class ServiceList extends React.Component {
   }
 
 
-    async componentDidMount() {
-        await this.getServiceList();
-        await this.getAutoList();
-    }
-
-    async handleDelete(event) {
-        const url = `http://localhost:8080/api/services/${event}`
+    async handleDelete(id) {
+        const url = `http://localhost:8080/api/services/${id}`
         await fetch(url, {method: "DELETE"})
         this.getServiceList()
     }
@@ -70,9 +70,8 @@ class ServiceList extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.services.map(service => {
-                return (
-                  <tr key={service.id}>
+              {this.state.services.map((service) =>
+                <tr key={service.id}>
                     {this.state.autos.map(auto => {
                       if (service.vin == auto.vin){
                         return(
@@ -93,8 +92,7 @@ class ServiceList extends React.Component {
                     <td><button className="btn btn-danger" onClick={() => this.handleDelete(service.id)}>Cancel</button></td>
                     <td><button className="btn btn-success" onClick={() => this.handleDelete(service.id)}>Finished</button></td>
                   </tr>
-                );
-              })}
+              )}
             </tbody>
         </table>
         </div>

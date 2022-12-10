@@ -7,6 +7,11 @@ class ManufacturerList extends React.Component {
     }
 
 
+    async componentDidMount() {
+        await this.getManufacturerList();
+    }
+
+
     async getManufacturerList() {
         const response = await fetch("http://localhost:8100/api/manufacturers/");
         if(response.ok) {
@@ -19,11 +24,6 @@ class ManufacturerList extends React.Component {
             errorMessage: "Could not get list of manufacturers"
           })
         }
-    }
-
-
-    async componentDidMount() {
-        await this.getManufacturerList();
     }
 
 
