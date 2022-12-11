@@ -17,7 +17,7 @@ class Service(models.Model):
     date = models.DateField(default=datetime.now, blank=True)
     time = models.TimeField(default=datetime.now, blank=True)
     reason = models.CharField(max_length=100)
-    vip = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
 
     technician = models.ForeignKey(
         Technician,

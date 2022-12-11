@@ -2,7 +2,7 @@ from .models import Service, AutomobileVO, Technician
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 import json
-from .encoders import ServiceDetailEncoder, ServiceListEncoder, TechnicianEncoder
+from .encoders import ServiceDetailEncoder, ServiceListEncoder, TechnicianEncoder, TechnicianDetailEncoder
 from django.http import JsonResponse
 
 
@@ -97,6 +97,41 @@ def api_list_technicians(request):
         except:
             response = JsonResponse({"message": "Could not create a technician"})
             response.status_code = 400
+            return response
+
+@require_http_methods(["DELETE", "GET", "PUT"])
+def api_show_technician(request, id):
+    if request.method == "GET":
+        try:
+            technician = Technician.objects.get(id=id)
+            return JsonResponse(
+                technician,
+                encoder=TechnicianDetailEncoder,
+                safe=False,
+            )
+        except Technician.DoesNotExist:
+            response = JsonResponse({"message": "Technician does not exist"})
+            response.status_code = 404
+            return response
+    elif request.method == "DELETE":
+        try:
+            count, _ = Technician.objects.filter(id=id).delete()
+            return JsonResponse({"deleted": count > 0})
+        except Technician.DoesNotExist:
+            return JsonResponse({"message": "Technician does not exist"})
+    else:
+        try:
+            content = json.loads(request.body)
+            Technician.objects.filter(id=id).update(**content)
+            technicians = Technician.objects.get(id=id)
+            return JsonResponse(
+                technicians,
+                encoder=TechnicianDetailEncoder,
+                safe=False,
+            )
+        except Technician.DoesNotExist:
+            response = JsonResponse({"message": "Technician does not exist"})
+            response.status_code = 404
             return response
 
 

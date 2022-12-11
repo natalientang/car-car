@@ -4,6 +4,7 @@ import Nav from './Nav';
 import ServiceList from './ServiceList';
 import ServiceForm from './ServiceForm';
 import TechnicianForm from './TechnicianForm';
+import TechnicianList from './TechnicianList';
 import ServiceHistory from './ServiceHistory';
 import ManufacturerForm from './ManufacturerForm';
 import ManufacturerList from './ManufacturerList';
@@ -26,6 +27,7 @@ function App() {
               <Route path="history" element={<ServiceHistory/>} />
             </Route>
             <Route path = "technicians">
+              <Route path="" element={<TechnicianList />} />
               <Route path="new" element={<TechnicianForm />} />
             </Route>
             <Route path = "manufacturers">

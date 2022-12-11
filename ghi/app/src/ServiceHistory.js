@@ -60,7 +60,7 @@ class ServiceHistory extends React.Component {
             <tbody>
               {this.state.services
                 .filter((service) =>
-                    service.vin.includes(this.state.filterInput)
+                    service.vin.includes(this.state.filterInput) && service.completed == true
                 )
                 .map((service) =>
                     <tr key={service.id}>
