@@ -8,7 +8,7 @@ from .models import (
     AutomobileVO,
     PotentialCustomer)
 
-from .encoders import SalesEncoder, PotentialCustomerEncoder, SalesPersonEncoder
+from .encoders import SalesEncoder, PotentialCustomerEncoder, SalesPersonEncoder, AutomobileVOEncoder
 
 @require_http_methods(["GET", "POST"])
 def api_create_customer(request):
@@ -58,7 +58,7 @@ def api_list_sales(request):
                 status=400,
             )
         try:
-            employee = SalesPerson.objects.get(employee_number=content["employee"])
+            employee = SalesPerson.objects.get(employee_name=content["employee"])
             content["employee"] = employee
 
         except SalesPerson.DoesNotExist:
@@ -82,3 +82,11 @@ def api_list_sales(request):
             encoder=SalesEncoder,
             safe=False
         )
+
+@require_http_methods(["GET"])
+def api_autovos(request):
+    if request.method == "GET":
+        autos = AutomobileVO.objects.all()
+        return JsonResponse({
+            "autos": autos},
+            encoder=AutomobileVOEncoder)

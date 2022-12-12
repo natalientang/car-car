@@ -5,9 +5,9 @@ from .models import (
     PotentialCustomer)
 from common.json import ModelEncoder
 
-class AutomboileVOEncoder(ModelEncoder):
+class AutomobileVOEncoder(ModelEncoder):
     model = AutomobileVO
-    properties = ["vin", "import_href"]
+    properties = ["vin", "import_href","id"]
 
 
 class PotentialCustomerEncoder(ModelEncoder):
@@ -16,15 +16,17 @@ class PotentialCustomerEncoder(ModelEncoder):
 
 class SalesPersonEncoder(ModelEncoder):
     model = SalesPerson
-    properties = ["employee_name", "employee_number"]
+    properties = ["employee_name", "employee_number","id"]
 
 
 class SalesEncoder(ModelEncoder):
     model = Sales
-    properties = ["price", "auto", "customer","employee"]
+    properties = ["price", "auto", "customer","employee", "id"]
 
     encoders = {
-        "auto": AutomboileVOEncoder(),
+        "auto": AutomobileVOEncoder(),
         "customer": PotentialCustomerEncoder(),
-        "employee": SalesPersonEncoder(),
     }
+
+    def get_extra_data(self, o):
+        return {"employee": o.employee.employee_name}
