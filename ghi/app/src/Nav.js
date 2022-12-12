@@ -47,7 +47,7 @@ function Nav() {
                 aria-labelledby="dropdownMenuLink"
               >
                 <li className="nav-item dropdown-item">
-                  <NavLink className="nav-link" to="/manufacturers">
+                  <NavLink className="nav-link" end to="/manufacturers">
                     Manufacturers
                   </NavLink>
                 </li>
@@ -58,7 +58,7 @@ function Nav() {
                 </li>
                 <div className="dropdown-divider"></div>
                 <li className="nav-item dropdown-item">
-                  <NavLink className="nav-link" to="/models">
+                  <NavLink className="nav-link" end to="/models">
                     Vehicle Models
                   </NavLink>
                 </li>
@@ -69,7 +69,7 @@ function Nav() {
                 </li>
                 <div className="dropdown-divider"></div>
                 <li className="nav-item dropdown-item">
-                  <NavLink className="nav-link" to="/automobiles">
+                  <NavLink className="nav-link" end to="/automobiles">
                     Automobiles
                   </NavLink>
                 </li>
@@ -97,7 +97,7 @@ function Nav() {
                 aria-labelledby="dropdownMenuLink"
               >
                 <li className="nav-item dropdown-item">
-                  <NavLink className="nav-link" to="/services">
+                  <NavLink className="nav-link" end to="/services">
                     Service Appointments
                   </NavLink>
                 </li>
@@ -113,7 +113,7 @@ function Nav() {
                 </li>
                 <div className="dropdown-divider"></div>
                 <li className="nav-item dropdown-item">
-                  <NavLink className="nav-link" to="/technicians">
+                  <NavLink className="nav-link" end to="/technicians">
                     Technicians
                   </NavLink>
                 </li>
