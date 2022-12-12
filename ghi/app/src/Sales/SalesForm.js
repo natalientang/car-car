@@ -66,9 +66,6 @@ export class SalesForm extends React.Component{
             this.setState({autos: autoData.autos,
                 customers: customerData.customers,
                 employees: employeeData.employees})
-            console.log(autoData)
-            console.log(customerData)
-            console.log(employeeData)
         }
         else{
             this.setState({

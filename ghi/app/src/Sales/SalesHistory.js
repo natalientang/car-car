@@ -20,8 +20,7 @@ export class SalesHistory extends React.Component {
             delete data.errorMessage
 
             this.setState({ sales: sales });
-            console.log(data); // ! Don't leave console.logs in main
-            // ! What happens if the response is not ok?
+
       } else {
         this.setState({
             errorMessage: "Couldn't get the Sales history, try again later."
