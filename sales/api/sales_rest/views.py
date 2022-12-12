@@ -1,4 +1,4 @@
-#from django.shortcuts import render
+
 from django.views.decorators.http import require_http_methods
 import json
 from django.http import JsonResponse
@@ -8,7 +8,12 @@ from .models import (
     AutomobileVO,
     PotentialCustomer)
 
-from .encoders import SalesEncoder, PotentialCustomerEncoder, SalesPersonEncoder, AutomobileVOEncoder
+from .encoders import (
+    SalesEncoder,
+    PotentialCustomerEncoder,
+    SalesPersonEncoder,
+    AutomobileVOEncoder)
+
 
 @require_http_methods(["GET", "POST"])
 def api_create_customer(request):
@@ -82,6 +87,7 @@ def api_list_sales(request):
             encoder=SalesEncoder,
             safe=False
         )
+
 
 @require_http_methods(["GET"])
 def api_autovos(request):
