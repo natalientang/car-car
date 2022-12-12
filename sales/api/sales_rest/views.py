@@ -24,7 +24,14 @@ def api_create_customer(request):
             safe=False)
     else:
         content = json.loads(request.body)
-        customer = PotentialCustomer.objects.create(**content)
+        try:
+            customer = PotentialCustomer.objects.create(**content)
+        except PotentialCustomer.DoesNotExist:
+            return JsonResponse(
+                {"message": "Could not create a customer, try again later"},
+                status=400,
+            )
+
         return JsonResponse(customer,
             encoder=PotentialCustomerEncoder,
             safe=False)
@@ -38,7 +45,14 @@ def api_create_employee(request):
         encoder=SalesPersonEncoder)
     else:
         content = json.loads(request.body)
-        employee = SalesPerson.objects.create(**content)
+        try:
+            employee = SalesPerson.objects.create(**content)
+        except:
+            return JsonResponse(
+                {"message": "Could not create a employee, try again later"},
+                status=400,
+            )
+
         return JsonResponse(employee,
             encoder=SalesPersonEncoder,
             safe=False)
@@ -81,7 +95,14 @@ def api_list_sales(request):
                 status=400,
             )
 
-        sale = Sales.objects.create(**content)
+        try:
+            sale = Sales.objects.create(**content)
+        except Sales.DoesNotExist:
+            return JsonResponse(
+                {"message": "Could Not create a sale, try again later"},
+                status=400,
+            )
+
         return JsonResponse(
             sale,
             encoder=SalesEncoder,

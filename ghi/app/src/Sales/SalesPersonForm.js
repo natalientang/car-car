@@ -17,7 +17,7 @@ export class SalesPersonForm extends React.Component{
     async handleSubmit(event) {
         event.preventDefault();
         const data = {...this.state};
-
+        delete data.errorMessage
         const url = "http://localhost:8090/api/employees/"
         const fetchConfig = {
             method: "post",
@@ -67,7 +67,7 @@ export class SalesPersonForm extends React.Component{
                 <div className="offset-3 col-6">
                 <div className="shadow p-4 mt-4">
                 <div className={error}>{this.state.errorMessage}</div>
-                    <h1>Add some Shoes</h1>
+                    <h1>Add a Sales Person</h1>
                     <form onSubmit={this.handleSubmit} id="create-sales-person-form">
                     <div className="form-floating mb-3">
                         <input onChange={this.handleChange} placeholder="Sales Person's Name" required type="text" name="employee_name" id="employee_name" className="form-control" />

@@ -26,7 +26,7 @@ export class SalesForm extends React.Component{
         delete data.customers
         delete data.employees
         delete data.success
-
+        delete data.errorMessage
         const url = "http://localhost:8090/api/sales/"
         const fetchConfig = {
             method: "post",
