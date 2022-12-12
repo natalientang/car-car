@@ -99,6 +99,7 @@ def api_list_technicians(request):
             response.status_code = 400
             return response
 
+
 @require_http_methods(["DELETE", "GET", "PUT"])
 def api_show_technician(request, id):
     if request.method == "GET":
