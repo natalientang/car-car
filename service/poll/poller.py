@@ -11,6 +11,7 @@ django.setup()
 
 from service_rest.models import AutomobileVO
 
+
 def get_automobiles():
     url = "http://inventory-api:8000/api/automobiles/"
     response = requests.get(url)
@@ -20,6 +21,7 @@ def get_automobiles():
             import_href=auto["href"],
             defaults={"color": auto["color"], "year": auto["year"], "vin": auto["vin"]}
         )
+
 
 def poll():
     while True:

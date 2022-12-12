@@ -7,9 +7,11 @@ class AutomobileVO(models.Model):
     vin = models.CharField(max_length=17)
     import_href = models.CharField(max_length=200, unique=True, null=True)
 
+
 class Technician(models.Model):
     name = models.CharField(max_length=100)
     employee_number = models.IntegerField(unique=True)
+
 
 class Service(models.Model):
     vin = models.CharField(max_length=17)
