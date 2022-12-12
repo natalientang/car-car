@@ -130,7 +130,7 @@ function Nav() {
             </a>
             <ul style={styleProps} className="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li className="nav-item dropdown-item">
-                <NavLink className="nav-link" to="/sale">Sales History</NavLink>
+                <NavLink className="nav-link" end to="/sale">Sales History</NavLink>
               </li>
               <li className="nav-item dropdown-item">
                 <NavLink className="nav-link" to="/sale/new">New Sale</NavLink>
