@@ -6,6 +6,7 @@ Team:
 * Person 2 - Alonso Rodriguez (Sales)
 
 ## Design
+We used Automobile VOs to access the data with polling from the Inventory API in our own microservices.
 
 ## Service microservice
 

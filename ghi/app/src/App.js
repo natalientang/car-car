@@ -5,17 +5,17 @@ import { SalesPersonForm } from './Sales/SalesPersonForm';
 import { PotentialCustomerForm } from './Sales/PotentialCustomerForm';
 import { SalesForm } from './Sales/SalesForm';
 import { SalesHistory } from './Sales/SalesHistory';
-import ServiceList from './ServiceList';
-import ServiceForm from './ServiceForm';
-import TechnicianForm from './TechnicianForm';
-import TechnicianList from './TechnicianList';
-import ServiceHistory from './ServiceHistory';
-import ManufacturerForm from './ManufacturerForm';
-import ManufacturerList from './ManufacturerList';
-import VehicleModelForm from './VehicleModelForm';
-import VehicleModelList from './VehicleModelList';
-import AutomobileForm from './AutomobileForm';
-import AutomobileList from './AutomobileList';
+import ServiceList from './Services/ServiceList';
+import ServiceForm from './Services/ServiceForm';
+import TechnicianForm from './Services/TechnicianForm';
+import TechnicianList from './Services/TechnicianList';
+import ServiceHistory from './Services/ServiceHistory';
+import ManufacturerForm from './Inventory/ManufacturerForm';
+import ManufacturerList from './Inventory/ManufacturerList';
+import VehicleModelForm from './Inventory/VehicleModelForm';
+import VehicleModelList from './Inventory/VehicleModelList';
+import AutomobileForm from './Inventory/AutomobileForm';
+import AutomobileList from './Inventory/AutomobileList';
 
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
       <Nav />
       <div className="container">
         <Routes>
+          <Route path="/" element={<MainPage />} />
           <Route path="sale">
             <Route path="" element={<SalesHistory />} />
             <Route path="new" element={<SalesForm />} />
