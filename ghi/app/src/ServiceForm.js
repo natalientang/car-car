@@ -24,6 +24,11 @@ class ServiceForm extends React.Component {
       const techniciansdata = await technicianresponse.json();
       this.setState({ technicians: techniciansdata.technicians });
     }
+    else {
+      this.setState({
+        errorMessage: "Could not technicians data"
+      })
+    }
   }
 
 
@@ -94,6 +99,11 @@ class ServiceForm extends React.Component {
       successClass = "alert alert-success mb-0";
     }
 
+    let error = "alert alert-danger d-none";
+    if (this.state.errorMessage != "") {
+      error = "alert alert-danger";
+    }
+
     let dropdownClasses = "form-select";
 
 
@@ -103,6 +113,7 @@ class ServiceForm extends React.Component {
           <div className="offset-3 col-6">
             <div className="shadow p-4 mt-4">
               <h1>Create a new service appointment</h1>
+              <div className={error}>{this.state.errorMessage}</div>
               <form onSubmit={this.handleSubmit} id="create-service-form">
                 <div className="form-floating mb-3">
                   <input

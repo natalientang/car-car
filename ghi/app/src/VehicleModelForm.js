@@ -21,6 +21,11 @@ class VehicleModelForm extends React.Component {
       const manufacturerdata = await manufacturerresponse.json();
       this.setState({ manufacturer_ids: manufacturerdata.manufacturers });
     }
+    else {
+      this.setState({
+        errorMessage: "Could not get manufacturers data"
+      })
+    }
   }
 
 
@@ -76,6 +81,11 @@ class VehicleModelForm extends React.Component {
       successClass = "alert alert-success mb-0";
     }
 
+    let error = "alert alert-danger d-none";
+    if (this.state.errorMessage != "") {
+      error = "alert alert-danger";
+    }
+
     let dropdownClasses = "form-select";
 
 
@@ -85,6 +95,7 @@ class VehicleModelForm extends React.Component {
           <div className="offset-3 col-6">
             <div className="shadow p-4 mt-4">
               <h1>Create a new vehicle model</h1>
+              <div className={error}>{this.state.errorMessage}</div>
               <form onSubmit={this.handleSubmit} id="create-model-form">
                 <div className="form-floating mb-3">
                   <input

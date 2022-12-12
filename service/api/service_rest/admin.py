@@ -5,6 +5,7 @@ from .models import Service, Technician
 class ServiceAdmin(admin.ModelAdmin):
     pass
 
+
 @admin.register(Technician)
 class TechnicianAdmin(admin.ModelAdmin):
     pass

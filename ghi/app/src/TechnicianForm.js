@@ -59,6 +59,11 @@ class TechnicianForm extends React.Component {
       successClass = "alert alert-success mb-0";
     }
 
+    let error = "alert alert-danger d-none";
+    if (this.state.errorMessage != "") {
+      error = "alert alert-danger";
+    }
+
 
     return (
       <div className="container">
@@ -66,6 +71,7 @@ class TechnicianForm extends React.Component {
           <div className="offset-3 col-6">
             <div className="shadow p-4 mt-4">
               <h1>Create a new technician</h1>
+              <div className={error}>{this.state.errorMessage}</div>
               <form onSubmit={this.handleSubmit} id="create-technician-form">
                 <div className="form-floating mb-3">
                   <input
