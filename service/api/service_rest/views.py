@@ -59,7 +59,9 @@ def api_show_service(request, id):
             count, _ = Service.objects.filter(id=id).delete()
             return JsonResponse({"deleted": count > 0})
         except Service.DoesNotExist:
-            return JsonResponse({"message": "Service does not exist"})
+            response = JsonResponse({"message": "Service does not exist"})
+            response.status_code = 404
+            return response
     else:
         try:
             content = json.loads(request.body)

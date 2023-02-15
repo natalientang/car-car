@@ -1,111 +1,80 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
-class ServiceForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      vin: "",
-      customer_name: "",
-      date: "",
-      time: "",
-      reason: "",
-      technicians: [],
-      errorMessage: "",
-      success: false,
-    };
-  }
+function ServiceForm() {
+  const [formData, setFormData] = useState({
+    vin: "",
+    customer_name: "",
+    date: "",
+    time: "",
+    reason: "",
+    technician: "",
+    errorMessage: false,
+    success: false,
+  })
+  const [technicians, setTechnicians] = useState([])
 
 
-  async componentDidMount() {
-    const techniciansurl = "http://localhost:8080/api/technicians/";
-
-    const technicianresponse = await fetch(techniciansurl);
-    if (technicianresponse.ok) {
-      const techniciansdata = await technicianresponse.json();
-      this.setState({ technicians: techniciansdata.technicians });
-    }
-    else {
-      this.setState({
-        errorMessage: "Could not technicians data"
-      })
-    }
-  }
+  useEffect(() => {
+     if(technicians.length === 0) {
+      fetch('http://localhost:8080/api/technicians/')
+        .then(response => response.json())
+        .then(response => setTechnicians(response.technicians))
+     }
+   },[technicians]);
 
 
-  handleSubmit = async (event) => {
+   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = { ...this.state };
-    delete data.technicians;
-    delete data.errorMessage;
-    delete data.success;
+    const data = {...formData}
+    delete data.errorMessage
+    delete data.success
 
-    const servicesUrl = `http://localhost:8080/api/services/`;
+    const url = `http://localhost:8080/api/services/`
     const fetchConfig = {
-      method: "post",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
+        method: "post",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
     };
-    const response = await fetch(servicesUrl, fetchConfig);
-    if (response.ok) {
-      const cleared = {
+    const response = await fetch(url, fetchConfig);
+    if(response.ok) {
+      const newService = await response.json();
+      setFormData({
         vin: "",
         customer_name: "",
         date: "",
         time: "",
-        technician: "",
         reason: "",
-      };
-      this.setState({ success: true });
-      this.setState(cleared);
-    } else {
-      this.setState({
-        errorMessage: "Could not submit form",
+        technician: "",
+        success: true
+      });
+    } else if(!response.ok) {
+      setFormData({
+        errorMessage: true,
       });
     }
-  };
-
-
-  handleVinChange = (event) => {
-    const value = event.target.value;
-    this.setState({ vin: value });
-  };
-  handleCustomerNameChange = (event) => {
-    const value = event.target.value;
-    this.setState({ customer_name: value });
-  };
-  handleDateChange = (event) => {
-    const value = event.target.value;
-    this.setState({ date: value });
-  };
-  handleTimeChange = (event) => {
-    const value = event.target.value;
-    this.setState({ time: value });
-  };
-  handleTechnicianChange = (event) => {
-    const value = event.target.value;
-    this.setState({ technician: value });
-  };
-  handleReasonChange = (event) => {
-    const value = event.target.value;
-    this.setState({ reason: value });
-  };
-
-
-  render() {
-    let successClass = "alert alert-success d-none mb-0";
-    if (this.state.success === true) {
-      successClass = "alert alert-success mb-0";
-    }
-
-    let error = "alert alert-danger d-none";
-    if (this.state.errorMessage != "") {
-      error = "alert alert-danger";
-    }
+   }
 
     let dropdownClasses = "form-select";
 
+    const ErrorMessage = () => {
+    if(formData.errorMessage === true) {
+      return (<div className="alert alert-danger">Could not submit form</div>)
+    }
+    else {
+      return (<div className="alert alert-danger d-none">You have created a new service appointment!</div>)
+    }
+  }
+
+    const SuccessMessage = () => {
+    if(formData.success === true) {
+      return (<div className="alert alert-success mb-0">You have created a new service appointment!</div>)
+    }
+    else {
+      return (<div className="alert alert-success d-none mb-0">Could not submit form</div>)
+    }
+  }
 
     return (
       <div className="container">
@@ -113,12 +82,12 @@ class ServiceForm extends React.Component {
           <div className="offset-3 col-6">
             <div className="shadow p-4 mt-4">
               <h1>Create a new service appointment</h1>
-              <div className={error}>{this.state.errorMessage}</div>
-              <form onSubmit={this.handleSubmit} id="create-service-form">
+              <ErrorMessage/>
+              <form onSubmit={handleSubmit} id="create-service-form">
                 <div className="form-floating mb-3">
                   <input
-                    onChange={this.handleVinChange}
-                    value={this.state.vin}
+                    onChange={(event) => setFormData({...formData, vin: event.target.value})}
+                    value={formData.vin}
                     placeholder="VIN"
                     required
                     type="text"
@@ -130,8 +99,8 @@ class ServiceForm extends React.Component {
                 </div>
                 <div className="form-floating mb-3">
                   <input
-                    onChange={this.handleCustomerNameChange}
-                    value={this.state.customer_name}
+                    onChange={(event) => setFormData({...formData, customer_name: event.target.value})}
+                    value={formData.customer_name}
                     placeholder="Customer Name"
                     required
                     type="text"
@@ -143,8 +112,8 @@ class ServiceForm extends React.Component {
                 </div>
                 <div className="form-floating mb-3">
                   <input
-                    onChange={this.handleDateChange}
-                    value={this.state.date}
+                    onChange={(event) => setFormData({...formData, date: event.target.value})}
+                    value={formData.date}
                     placeholder="Date"
                     required
                     type="date"
@@ -156,8 +125,8 @@ class ServiceForm extends React.Component {
                 </div>
                 <div className="form-floating mb-3">
                   <input
-                    onChange={this.handleTimeChange}
-                    value={this.state.date_time}
+                    onChange={(event) => setFormData({...formData, time: event.target.value})}
+                    value={formData.time}
                     placeholder="Time"
                     required
                     type="time"
@@ -169,14 +138,14 @@ class ServiceForm extends React.Component {
                 </div>
                 <div className="mb-3">
                   <select
-                    onChange={this.handleTechnicianChange}
+                    onChange={(event) => setFormData({...formData, technician: event.target.value})}
                     name="technician"
                     id="technician"
                     className={dropdownClasses}
                     required
                   >
                     <option value="">Choose a Technician</option>
-                    {this.state.technicians.map((technician) => {
+                    {technicians.map((technician) => {
                       return (
                         <option
                           key={technician.employee_number}
@@ -190,8 +159,8 @@ class ServiceForm extends React.Component {
                 </div>
                 <div className="form-floating mb-3">
                   <input
-                    onChange={this.handleReasonChange}
-                    value={this.state.reason}
+                    onChange={(event) => setFormData({...formData, reason: event.target.value})}
+                    value={formData.reason}
                     placeholder="Reason"
                     required
                     type="text"
@@ -206,9 +175,7 @@ class ServiceForm extends React.Component {
                     Create a service appointment
                   </button>
                 </div>
-                <div className={successClass} id="success-message">
-                  You have created a new service appointment!
-                </div>
+                <SuccessMessage/>
               </form>
             </div>
           </div>
@@ -216,6 +183,5 @@ class ServiceForm extends React.Component {
       </div>
     );
   }
-}
 
 export default ServiceForm;

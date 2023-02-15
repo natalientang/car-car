@@ -1,56 +1,53 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
-class ServiceList extends React.Component {
-  state = {
-    services: [],
-    autos: [],
-    errorMessage: "",
-    service: "",
-  };
+function ServiceList() {
+  const [services, setServices] = useState([]);
+  const [autos, setAutos] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [service, setService] = useState('');
 
 
-  async componentDidMount() {
-    await this.getServiceList();
-    await this.getAutoList();
-  }
+  useEffect(() => {
 
 
-  async getServiceList() {
+    getServiceList()
+    getAutoList()
+  }, [])
+
+  async function getServiceList() {
     const response = await fetch("http://localhost:8080/api/services");
     if (response.ok) {
       const data = await response.json();
       const services = data.services;
-      this.setState({ services: services });
+      setServices(services);
     } else {
-      this.setState({
-        errorMessage: "Could not get list of services",
-      });
+      setErrorMessage(
+       "Could not get list of services"
+      );
     }
   }
 
-
-  async getAutoList() {
+  async function getAutoList() {
     const response = await fetch("http://localhost:8100/api/automobiles/");
     if (response.ok) {
       const data = await response.json();
       const autos = data.autos;
-      this.setState({ autos: autos });
+      setAutos(autos);
     } else {
-      this.setState({
-        errorMessage: "Could not get list of autos",
-      });
+      setErrorMessage(
+      "Could not get list of autos"
+      );
     }
   }
 
-
-  async handleDelete(id) {
+  async function handleDelete(id) {
     const url = `http://localhost:8080/api/services/${id}`;
     await fetch(url, { method: "DELETE" });
-    this.getServiceList();
+    getServiceList();
   }
 
 
-  async handleComplete(id) {
+  async function handleComplete(id) {
     const url = `http://localhost:8080/api/services/${id}/`;
     const fetchConfig = {
       method: "PUT",
@@ -60,12 +57,11 @@ class ServiceList extends React.Component {
       body: JSON.stringify({ completed: true }),
     };
     await fetch(url, fetchConfig);
-    this.getServiceList();
+    getServiceList();
   }
 
-
-  ServiceVIP = (serviceVin) => {
-    let obj = this.state.autos.find((autoObj) => autoObj.vin === serviceVin);
+  function ServiceVIP (serviceVin) {
+    let obj = autos.find((autoObj) => autoObj.vin === serviceVin);
     return obj ? (
       <td>
         <img
@@ -79,58 +75,56 @@ class ServiceList extends React.Component {
     );
   };
 
-
-  render() {
-    return (
-      <div>
-        <h1 className="mt-3">Service Appointments</h1>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>VIP Status</th>
-              <th>Vin</th>
-              <th>Customer Name</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Technician</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.services
-              .filter((service) => service.completed == false)
-              .map((service) => (
-                <tr key={service.id}>
-                  {this.ServiceVIP(service.vin)}
-                  <td>{service.vin}</td>
-                  <td>{service.customer_name}</td>
-                  <td>{service.date}</td>
-                  <td>{service.time}</td>
-                  <td>{service.technician.name}</td>
-                  <td>{service.reason}</td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => this.handleDelete(service.id)}
-                    >
-                      Cancel
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-success"
-                      onClick={() => this.handleComplete(service.id)}
-                    >
-                      Finished
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h1 className="mt-3">Service Appointments</h1>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>VIP Status</th>
+            <th>Vin</th>
+            <th>Customer Name</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Technician</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          {services
+            .filter((service) => service.completed == false)
+            .map((service) => (
+              <tr key={service.id}>
+                {ServiceVIP(service.vin)}
+                <td>{service.vin}</td>
+                <td>{service.customer_name}</td>
+                <td>{service.date}</td>
+                <td>{service.time}</td>
+                <td>{service.technician.name}</td>
+                <td>{service.reason}</td>
+                <td>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(service.id)}
+                  >
+                    Cancel
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="btn btn-success"
+                    onClick={() => handleComplete(service.id)}
+                  >
+                    Finished
+                  </button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
+
 
 export default ServiceList;
