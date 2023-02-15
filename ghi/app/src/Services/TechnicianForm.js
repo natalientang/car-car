@@ -1,25 +1,21 @@
-import React from "react";
+import React, {useState} from "react";
 
-class TechnicianForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+function TechnicianForm() {
+  const [formData, setFormData] = useState({
       name: "",
       employee_number: "",
       errorMessage: "",
       success: false,
-    };
-  }
+  })
 
 
-  handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = { ...this.state };
-    delete data.technicians;
+    const data = { ...formData };
     delete data.errorMessage;
     delete data.success;
 
-    const techniciansUrl = `http://localhost:8080/api/technicians/`;
+    const url = `http://localhost:8080/api/technicians/`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify(data),
@@ -27,40 +23,31 @@ class TechnicianForm extends React.Component {
         "Content-Type": "application/json",
       },
     };
-    const response = await fetch(techniciansUrl, fetchConfig);
+    const response = await fetch(url, fetchConfig);
     if (response.ok) {
-      const cleared = {
+      const newTechnician = await response.json();
+
+      setFormData({ success: true });
+      setFormData({
         name: "",
         employee_number: "",
-      };
-      this.setState({ success: true });
-      this.setState(cleared);
+      });
     } else {
-      this.setState({
+      setFormData({
         errorMessage: "Could not submit form",
       });
     }
   };
 
 
-  handleNameChange = (event) => {
-    const value = event.target.value;
-    this.setState({ name: value });
-  };
-  handleEmployeeNumberChange = (event) => {
-    const value = event.target.value;
-    this.setState({ employee_number: value });
-  };
 
-
-  render() {
     let successClass = "alert alert-success d-none mb-0";
-    if (this.state.success === true) {
+    if (formData.success === true) {
       successClass = "alert alert-success mb-0";
     }
 
     let error = "alert alert-danger d-none";
-    if (this.state.errorMessage != "") {
+    if (formData.errorMessage != "") {
       error = "alert alert-danger";
     }
 
@@ -71,12 +58,12 @@ class TechnicianForm extends React.Component {
           <div className="offset-3 col-6">
             <div className="shadow p-4 mt-4">
               <h1>Create a new technician</h1>
-              <div className={error}>{this.state.errorMessage}</div>
-              <form onSubmit={this.handleSubmit} id="create-technician-form">
+              <div className={error}>{formData.errorMessage}</div>
+              <form onSubmit={handleSubmit} id="create-technician-form">
                 <div className="form-floating mb-3">
                   <input
-                    onChange={this.handleNameChange}
-                    value={this.state.name}
+                    onChange={(event) => setFormData({...formData, name: event.target.value})}
+                    value={formData.name}
                     placeholder="Name"
                     required
                     type="text"
@@ -88,8 +75,8 @@ class TechnicianForm extends React.Component {
                 </div>
                 <div className="form-floating mb-3">
                   <input
-                    onChange={this.handleEmployeeNumberChange}
-                    value={this.state.employee_number}
+                    onChange={(event) => setFormData({...formData, employee_number: event.target.value})}
+                    value={formData.employee_number}
                     placeholder="Employee Number"
                     required
                     type="number"
@@ -114,6 +101,5 @@ class TechnicianForm extends React.Component {
       </div>
     );
   }
-}
 
 export default TechnicianForm;
